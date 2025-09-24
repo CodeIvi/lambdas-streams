@@ -1,6 +1,6 @@
 package org.iesvdm;
 
-import java.io.IO;
+
 import java.io.IOException;
 
 public class LecturaDeLinea {
