@@ -41,7 +41,7 @@ public class Calculadora1 {
             // Espera entradas tipo: "+ 23 45"
 
             String[] instruccion = input.trim().split(" ");
-            if(longitud(instruccion, input) == true){
+            if(longitud(instruccion, input)){
                 Operacion op = mapOperaciones.get(instruccion[0]);
                     Double result = op.oper(Double.parseDouble(instruccion[1]), Double.parseDouble(instruccion[2]));
                     System.out.println("Resultado: " + result);
