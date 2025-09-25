@@ -41,20 +41,12 @@ public class Calculadora1 {
             // Espera entradas tipo: "+ 23 45"
 
             String[] instruccion = input.trim().split(" ");
-
-            if (instruccion.length != 3) {
-                System.out.println("Formato de entrada " + input + " incorrecto");
-            } else {
-                // ["+","23","45"]
-                if (mapOperaciones.containsKey(instruccion[0]) && comprobar(instruccion[1])!=false && comprobar(instruccion[2])!=false) {
-                    // Ejecuta la operación y muestra el resultado
-                    Operacion op = mapOperaciones.get(instruccion[0]);
+            if(longitud(instruccion, input) == true){
+                Operacion op = mapOperaciones.get(instruccion[0]);
                     Double result = op.oper(Double.parseDouble(instruccion[1]), Double.parseDouble(instruccion[2]));
                     System.out.println("Resultado: " + result);
-                } else {
-                    System.out.println("Operacion " + instruccion[0] + " no contemplada");
-                }
             }
+          
         }
         sc.close();
     }
@@ -68,5 +60,22 @@ public class Calculadora1 {
                  System.out.println("Formato de 1er parámetro " + a + " incorrecto");
                return false;
         }
+        }
+
+        public static boolean longitud(String[] a, String b){
+            boolean correcto = false;
+              if (a.length != 3) {
+                System.out.println("Formato de entrada " + b + " incorrecto");
+            } else {
+                // ["+","23","45"]
+                if (mapOperaciones.containsKey(a[0]) && comprobar(a[1])!=false && comprobar(a[2])!=false) {
+                    // Ejecuta la operación y muestra el resultado
+                    
+                    correcto = true;
+                } else {
+                    System.out.println("Operacion " + a[0] + " no contemplada");
+                }
+            }
+            return correcto;
         }
 }
