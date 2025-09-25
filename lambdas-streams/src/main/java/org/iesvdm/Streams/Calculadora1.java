@@ -4,78 +4,103 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-// Definimos una interfaz funcional para las operaciones
-@FunctionalInterface
-interface Operacion {
-    double oper(double x, double y);
-}
-
 public class Calculadora1 {
-    
-    // Mapa para asociar cadenas (operadores) con operaciones
+
     private static Map<String, Operacion> mapOperaciones = new HashMap<>();
 
-    public static void main(String[] args) {
-        // Definimos las operaciones y las asociamos a símbolos y nombres
-        Operacion suma = (x, y) -> x + y;
+    private static Map<String, OperacionStr> mapOperacionesStr = new HashMap<>();
+
+    private void inicializar() {
+
+        Operacion suma= ((x, y) -> x + y);
+        Operacion resta = ((x, y) -> x - y);
+        Operacion mult = ((x, y) -> x * y);
+        Operacion div = ((x, y) -> {
+            
+            if (y == 0) {
+
+                throw new IllegalArgumentException();
+
+            }
+            
+            return x / y; 
+            
+        }
+        
+        );
+
         mapOperaciones.put("+", suma);
         mapOperaciones.put("add", suma);
 
-        mapOperaciones.put("-", (x, y) -> x - y);
-        mapOperaciones.put("sub", (x, y) -> x - y);
+        mapOperaciones.put("-", resta);
+        mapOperaciones.put("sub", resta);
 
-        mapOperaciones.put("*", (x, y) -> x * y);
-        mapOperaciones.put("mul", (x, y) -> x * y);
+        mapOperaciones.put("mul", mult);
+        mapOperaciones.put("*", mult);
 
-        mapOperaciones.put("/", (x, y) -> x / y);
-        mapOperaciones.put("div", (x, y) -> x / y);
+        mapOperaciones.put("/", div);
+        mapOperaciones.put("div", div);
 
-        String input = "";
-        Scanner sc = new Scanner(System.in);
+        ////////////////////////////////////
+        /// OperacionesStr
+        /// 
+        
+        OperacionStr upper = a -> a.toUpperCase();
+        mapOperacionesStr.put("upper", upper);
+
+        mapOperacionesStr.put("lower", s -> s.toLowerCase());
         
         
-        // Bucle principal: lee hasta que el usuario escriba "exit" o "salir"
-        while (!"exit".equalsIgnoreCase(input)
-                && !"salir".equalsIgnoreCase(input)) {
-            input = sc.nextLine();
-            // Espera entradas tipo: "+ 23 45"
+        mapOperacionesStr.put("lower", s -> {
+            //Otros pasos
+            //...
+            return  s.toLowerCase();
+        
+        });
 
-            String[] instruccion = input.trim().split(" ");
-            if(longitud(instruccion, input)){
-                Operacion op = mapOperaciones.get(instruccion[0]);
-                    Double result = op.oper(Double.parseDouble(instruccion[1]), Double.parseDouble(instruccion[2]));
-                    System.out.println("Resultado: " + result);
-            }
-          
-        }
-        sc.close();
+
     }
 
-    public static boolean comprobar(String a){
-        double oper1 = 0;
-         try {
-             oper1 = Double.parseDouble(a);
-             return true;
-        } catch (NumberFormatException nfe) {
-                 System.out.println("Formato de 1er parámetro " + a + " incorrecto");
-               return false;
-        }
+    
+    public static void main(String [] args) {
+
+        Scanner sc = new Scanner(System.in);
+        String input = sc.nextLine();
+        boolean salir = false;
+
+        String str = "hola mundo";
+        
+
+        while(!salir){
+            
+            //convertimos el input en un Ararray
+            String[] instruccionArr = input.trim().split(" ");
+
+            //Valido input y hago la operacion correspondiente.
+            if (validarInput.validarStr(instruccionArr, mapOperacionesStr.keySet())) {
+
+
+            
+            } else if(validarInput.validar(instruccionArr, mapOperaciones.keySet())) {
+
+                Operacion.calcular(instruccionArr, mapOperaciones);
+
+            }
+            
+            //Pido nuevo input
+            input = sc.nextLine();
+
+            //Condicion de salida
+            salir = input.equalsIgnoreCase("exit") || input.equalsIgnoreCase("salir");
+
         }
 
-        public static boolean longitud(String[] a, String b){
-            boolean correcto = false;
-              if (a.length != 3) {
-                System.out.println("Formato de entrada " + b + " incorrecto");
-            } else {
-                // ["+","23","45"]
-                if (mapOperaciones.containsKey(a[0]) && comprobar(a[1])!=false && comprobar(a[2])!=false) {
-                    // Ejecuta la operación y muestra el resultado
-                    
-                    correcto = true;
-                } else {
-                    System.out.println("Operacion " + a[0] + " no contemplada");
-                }
-            }
-            return correcto;
-        }
+        sc.close();
+
+    }
+
+
+
+    
+
 }
